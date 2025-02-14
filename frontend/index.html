@@ -34,7 +34,7 @@
       font-size: 1.8rem;
       margin-bottom: 1rem;
     }
-    input[type="url"] {
+    input {
       width: 100%;
       padding: 12px;
       font-size: 1rem;
@@ -46,10 +46,10 @@
       margin-bottom: 1rem;
       transition: 0.3s;
     }
-    input[type="url"]::placeholder {
+    input::placeholder {
       color: rgba(255, 255, 255, 0.6);
     }
-    input[type="url"]:focus {
+    input:focus {
       background: rgba(255, 255, 255, 0.3);
     }
     button {
@@ -93,7 +93,10 @@
       text-align: center;
     }
     footer {
-      margin-top: 60px;
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
       color: #aaa;
       font-size: 0.8rem;
     }
@@ -102,56 +105,57 @@
 <body>
   <div class="container">
     <h2>Free Compact URL Creator</h2>
-    <input type="url" id="inputUrl" placeholder="Enter your long URL here" required />
-    <button onclick="shortenUrl()">Generate Short URL</button>
-    <div class="result" id="resultBox">
-      <p>Short URL: <a href="#" id="shortUrl" class="short-url" target="_blank"></a></p>
-      <button class="copy-btn" onclick="copyToClipboard()">copy the link📋</button>
-      <div class="click-counter" id="clickCounter">Clicks: 0</div>
+    <input type="url" placeholder="Enter your long URL here" required />
+    <button>Generate Short URL</button>
+    <div class="result">
+      <p>Short URL: <a href="#" class="short-url" target="_blank"></a></p>
+      <button class="copy-btn">copy the link📋</button>
+      <div class="click-counter">Clicks: 0</div>
     </div>
   </div>
   
-  <footer id="footer">© Yunfei Wu 2025. All Right Reserved</footer>
+  <footer>© Yunfei Wu 2025. All Right Reversed.</footer>
 
   <script>
-    async function shortenUrl() {
-      const inputField = document.getElementById('inputUrl');
+    // Shorten URL function
+    document.querySelector("button").addEventListener("click", async () => {
+      const inputField = document.querySelector("input");
       const longUrl = inputField.value.trim();
       if (!longUrl) return;
       
       try {
-        const res = await fetch('/shorten', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch("/shorten", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ longUrl })
         });
-        if (!res.ok) throw new Error('Failed to shorten URL');
+        if (!res.ok) throw new Error("Failed to shorten URL");
         
         const data = await res.json();
-        const shortUrl = window.location.origin + '/' + data.shortCode;
+        const shortUrl = window.location.origin + "/" + data.shortCode;
         
-        document.getElementById('shortUrl').href = shortUrl;
-        document.getElementById('shortUrl').textContent = shortUrl;
-        document.getElementById('resultBox').style.display = 'block';
+        document.querySelector(".short-url").href = shortUrl;
+        document.querySelector(".short-url").textContent = shortUrl;
+        document.querySelector(".result").style.display = "block";
         
+        // Update click count periodically
         setInterval(async () => {
-          const countRes = await fetch('/clicks/' + data.shortCode);
+          const countRes = await fetch("/clicks/" + data.shortCode);
           const countData = await countRes.json();
-          document.getElementById('clickCounter').textContent = 'Clicks: ' + countData.clicks;
+          document.querySelector(".click-counter").textContent = "Clicks: " + countData.clicks;
         }, 2000);
       } catch (error) {
         alert(error.message);
       }
-    }
+    });
     
-    function copyToClipboard() {
-      const text = document.getElementById('shortUrl').textContent;
+    // Copy shortened URL function
+    document.querySelector(".copy-btn").addEventListener("click", () => {
+      const text = document.querySelector(".short-url").textContent;
       navigator.clipboard.writeText(text).then(() => {
-        alert('URL copied to clipboard!');
+        alert("URL copied to clipboard!");
       });
-    }
-    
-    
+    });
   </script>
 </body>
 </html>
