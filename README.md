@@ -26,7 +26,6 @@ This is a simple URL shortener application that allows everybody to convert long
 
 ```sh
 git clone https://github.com/yunfeiWu97/FUTURE_FS_03.git
-cd url-shortener
 ```
 
 ### 2. Install dependencies
@@ -38,6 +37,7 @@ npm install
 ### 3. Start the server
 
 ```sh
+cd backend
 node server.js
 ```
 
