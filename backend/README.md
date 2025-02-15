@@ -6,7 +6,7 @@ This is a simple URL shortener application that allows everybody to convert long
 
 ## Common Use Cases
 
-1️⃣ Easier Sharing: Short links make it easier to share long URLs on social media, SMS, and emails, where space is limited.
+1️⃣ Short links make it easier to share long URLs on social media, SMS, and emails, where space is limited.
 
 2️⃣ Tracking Clicks: Useful for marketing campaigns and surveys to monitor engagement and analyze performance.
 
@@ -19,7 +19,13 @@ This is a simple URL shortener application that allows everybody to convert long
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Node.js with Express.js
 - **Database**: In-memory object storage (can be extended to MongoDB)
-  
+
+## Limitations
+
+1️⃣ No database: URLs are lost when the server restarts. MongoDB or Redis could improve persistence.
+
+2️⃣ Long base URL: Since it's deployed on Render's free tier, the provided URL isn’t technically "short".
+
 ## Installation & Setup
 
 ### 1. Clone the repository
@@ -37,6 +43,7 @@ npm install
 ### 3. Start the server
 
 ```sh
+cd backend
 node server.js
 ```
 
